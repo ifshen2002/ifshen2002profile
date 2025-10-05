@@ -44,6 +44,58 @@ body {
     height: 70px;
 }
 
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.language-switcher {
+    display: flex;
+    background: #f3f4f6;
+    border-radius: 25px;
+    padding: 4px;
+    gap: 2px;
+}
+
+.lang-btn {
+    padding: 8px 16px;
+    border: none;
+    background: transparent;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    color: #6b7280;
+}
+
+.lang-btn.active {
+    background: #2563eb;
+    color: white;
+    box-shadow: 0 2px 4px rgba(37, 99, 235, 0.3);
+}
+
+.lang-btn:hover:not(.active) {
+    color: #2563eb;
+    background: rgba(37, 99, 235, 0.1);
+}
+
+.visit-counter {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 8px 12px;
+    background: #f8fafc;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    color: #6b7280;
+}
+
+.visit-counter i {
+    color: #2563eb;
+}
+
 .nav-logo a {
     font-size: 1.5rem;
     font-weight: 700;
@@ -243,6 +295,14 @@ main {
     font-size: 3rem;
     color: white;
     box-shadow: 0 10px 30px rgba(251, 191, 36, 0.3);
+    overflow: hidden;
+}
+
+.profile-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
 }
 
 .profile-info h3 {
@@ -296,9 +356,30 @@ main {
 
 .about-stats {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 2rem;
     margin-top: 3rem;
+}
+
+.resume-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 12px 24px;
+    background: #2563eb;
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: 2px solid #2563eb;
+}
+
+.resume-btn:hover {
+    background: transparent;
+    color: #2563eb;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
 }
 
 .stat {
@@ -334,32 +415,22 @@ main {
 
 .skills-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 3rem;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 1.5rem;
 }
 
-.skill-category {
+.skill-item {
     background: #f8fafc;
-    padding: 2rem;
+    padding: 1.5rem;
     border-radius: 15px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
     transition: transform 0.3s ease;
 }
 
-.skill-category:hover {
+.skill-item:hover {
     transform: translateY(-5px);
 }
 
-.skill-category h3 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 1.5rem;
-    color: #1f2937;
-}
-
-.skill-item {
-    margin-bottom: 1.5rem;
-}
 
 .skill-item span {
     display: block;
@@ -655,6 +726,10 @@ main {
 
 /* 响应式设计 */
 @media (max-width: 768px) {
+    .nav-actions {
+        display: none;
+    }
+    
     .nav-menu {
         position: fixed;
         left: -100%;
@@ -704,10 +779,10 @@ main {
     }
 
     .about-stats {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
         gap: 1rem;
     }
-
+    
     .skills-grid {
         grid-template-columns: 1fr;
     }

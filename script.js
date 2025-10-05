@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
     initContactForm();
     initSmoothScrolling();
     initTypingEffect();
+    initLanguageSwitcher();
+    initVisitCounter();
 });
 
 // 导航栏功能
@@ -456,6 +458,75 @@ window.addEventListener('error', function(e) {
     // 可以在这里添加错误报告逻辑
 });
 
+// 语言切换功能
+function initLanguageSwitcher() {
+    const langButtons = document.querySelectorAll('.lang-btn');
+    const currentLang = localStorage.getItem('language') || 'en';
+    
+    // 设置初始语言
+    setLanguage(currentLang);
+    
+    langButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const lang = this.getAttribute('data-lang');
+            setLanguage(lang);
+            localStorage.setItem('language', lang);
+        });
+    });
+}
+
+function setLanguage(lang) {
+    // 更新HTML lang属性
+    document.getElementById('html-lang').setAttribute('lang', lang);
+    
+    // 更新所有带有data属性的元素
+    const elements = document.querySelectorAll('[data-en][data-zh]');
+    elements.forEach(element => {
+        const text = element.getAttribute(`data-${lang}`);
+        if (text) {
+            element.textContent = text;
+        }
+    });
+    
+    // 更新页面标题和描述
+    const title = document.querySelector('title');
+    const description = document.querySelector('meta[name="description"]');
+    
+    if (title) {
+        const titleText = title.getAttribute(`data-${lang}`);
+        if (titleText) {
+            title.textContent = titleText;
+        }
+    }
+    
+    if (description) {
+        const descText = description.getAttribute(`data-${lang}`);
+        if (descText) {
+            description.setAttribute('content', descText);
+        }
+    }
+    
+    // 更新语言按钮状态
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.getAttribute('data-lang') === lang) {
+            btn.classList.add('active');
+        }
+    });
+}
+
+// 访问量统计功能
+function initVisitCounter() {
+    let visitCount = localStorage.getItem('visitCount') || 0;
+    visitCount = parseInt(visitCount) + 1;
+    localStorage.setItem('visitCount', visitCount);
+    
+    const counterElement = document.getElementById('visit-count');
+    if (counterElement) {
+        counterElement.textContent = visitCount.toLocaleString();
+    }
+}
+
 // 控制台欢迎信息
-console.log('%c欢迎来到 IFSHEN2002 的个人主页！', 'color: #2563eb; font-size: 16px; font-weight: bold;');
+console.log('%c欢迎来到 YIFAN SHEN 的个人主页！', 'color: #2563eb; font-size: 16px; font-weight: bold;');
 console.log('%c如果您对代码感兴趣，欢迎查看源代码！', 'color: #6b7280; font-size: 14px;');

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en" id="html-lang">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IFSHEN2002 - 个人主页</title>
-    <meta name="description" content="IFSHEN2002的个人主页 - 展示我的技能、项目和经历">
+    <title data-en="YIFAN SHEN - Personal Portfolio" data-zh="申一帆 - 个人主页">YIFAN SHEN - Personal Portfolio</title>
+    <meta name="description" data-en="YIFAN SHEN's personal portfolio - showcasing skills, projects and experience" data-zh="申一帆的个人主页 - 展示我的技能、项目和经历" content="YIFAN SHEN's personal portfolio - showcasing skills, projects and experience">
     <link rel="stylesheet" href="styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -14,14 +14,24 @@
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-logo">
-                <a href="#home">IFSHEN2002</a>
+                <a href="#home" data-en="YIFAN SHEN" data-zh="申一帆">YIFAN SHEN</a>
             </div>
             <div class="nav-menu" id="nav-menu">
-                <a href="#home" class="nav-link">首页</a>
-                <a href="#about" class="nav-link">关于我</a>
-                <a href="#skills" class="nav-link">技能</a>
-                <a href="#projects" class="nav-link">项目</a>
-                <a href="#contact" class="nav-link">联系我</a>
+                <a href="#home" class="nav-link" data-en="Home" data-zh="首页">Home</a>
+                <a href="#about" class="nav-link" data-en="About" data-zh="关于我">About</a>
+                <a href="#skills" class="nav-link" data-en="Skills" data-zh="技能">Skills</a>
+                <a href="#projects" class="nav-link" data-en="Projects" data-zh="项目">Projects</a>
+                <a href="#contact" class="nav-link" data-en="Contact" data-zh="联系我">Contact</a>
+            </div>
+            <div class="nav-actions">
+                <div class="language-switcher">
+                    <button class="lang-btn active" data-lang="en">EN</button>
+                    <button class="lang-btn" data-lang="zh">中文</button>
+                </div>
+                <div class="visit-counter">
+                    <i class="fas fa-eye"></i>
+                    <span id="visit-count">0</span>
+                </div>
             </div>
             <div class="nav-toggle" id="nav-toggle">
                 <span class="bar"></span>
@@ -38,27 +48,27 @@
             <div class="hero-container">
                 <div class="hero-content">
                     <h1 class="hero-title">
-                        你好，我是 <span class="highlight">IFSHEN2002</span>
+                        <span data-en="Hello, I'm" data-zh="你好，我是">Hello, I'm</span> <span class="highlight" data-en="YIFAN SHEN" data-zh="申一帆">YIFAN SHEN</span>
                     </h1>
-                    <p class="hero-subtitle">
-                        全栈开发者 | 技术爱好者 | 创新者
+                    <p class="hero-subtitle" data-en="4G/5G Network Engineer | C++ Backend Developer | Tech Enthusiast" data-zh="4G/5G网络工程师 | C++后端开发 | 技术爱好者">
+                        4G/5G Network Engineer | C++ Backend Developer | Tech Enthusiast
                     </p>
-                    <p class="hero-description">
-                        专注于创造优雅、高效的解决方案，热爱学习新技术，致力于用技术改变世界。
+                    <p class="hero-description" data-en="Dedicated to researching every line of code with precision, crafting elegant and efficient solutions through rigorous logic; committed to high-quality delivery while maintaining an optimistic and exploratory mindset towards unknown technologies, striving to change the world through innovation and passion." data-zh="精益求精地钻研每一行代码，用严谨的逻辑铸就优雅高效的解决方案；以高质量交付为目标，并永远对未知的技术保持积极乐观的探索之心，致力于以创新和热情去改变世界。">
+                        Dedicated to researching every line of code with precision, crafting elegant and efficient solutions through rigorous logic; committed to high-quality delivery while maintaining an optimistic and exploratory mindset towards unknown technologies, striving to change the world through innovation and passion.
                     </p>
                     <div class="hero-buttons">
-                        <a href="#about" class="btn btn-primary">了解更多</a>
-                        <a href="#contact" class="btn btn-secondary">联系我</a>
+                        <a href="#about" class="btn btn-primary" data-en="Learn More" data-zh="了解更多">Learn More</a>
+                        <a href="#contact" class="btn btn-secondary" data-en="Contact Me" data-zh="联系我">Contact Me</a>
                     </div>
                 </div>
                 <div class="hero-image">
                     <div class="profile-card">
                         <div class="profile-avatar">
-                            <i class="fas fa-user"></i>
+                            <img src="https://via.placeholder.com/120x120/2563eb/ffffff?text=YS" alt="YIFAN SHEN" class="profile-photo">
                         </div>
                         <div class="profile-info">
-                            <h3>IFSHEN2002</h3>
-                            <p>全栈开发者</p>
+                            <h3 data-en="YIFAN SHEN" data-zh="申一帆">YIFAN SHEN</h3>
+                            <p data-en="Software Engineer" data-zh="软件工程师">Software Engineer</p>
                         </div>
                     </div>
                 </div>
@@ -68,29 +78,33 @@
         <!-- 关于我部分 -->
         <section id="about" class="about">
             <div class="container">
-                <h2 class="section-title">关于我</h2>
+                <h2 class="section-title" data-en="About Me" data-zh="关于我">About Me</h2>
                 <div class="about-content">
                     <div class="about-text">
-                        <p>
-                            我是一名充满热情的全栈开发者，拥有多年的软件开发经验。
-                            我热爱编程，喜欢解决复杂的技术问题，并始终追求代码的优雅和效率。
+                        <p data-en="I am a passionate full-stack developer currently pursuing a Master's degree in Software Engineering at NUS, with deep expertise in 4G/5G satellite NTN communications and network infrastructure. I have experience in data science, cloud-native technologies, DevOps, and deep learning, with 1+ years of full-time software development experience and an ongoing 8-month internship (expected to complete by August 2026)." data-zh="我是一名正在NUS读软件工程硕士的学生，同时也是充满热情的全栈开发者，深入了解4G/5G卫星NTN通信、网络基础设施，对数据科学、云原生、DevOps、深度学习有所涉及，拥有1+年全职软件开发经验+正在进行的8个月的实习经验（预期到2026年8月）。">
+                            I am a passionate full-stack developer currently pursuing a Master's degree in Software Engineering at NUS, with deep expertise in 4G/5G satellite NTN communications and network infrastructure. I have experience in data science, cloud-native technologies, DevOps, and deep learning, with 1+ years of full-time software development experience and an ongoing 8-month internship (expected to complete by August 2026).
                         </p>
-                        <p>
-                            除了技术开发，我还关注用户体验设计，相信好的产品需要技术与设计的完美结合。
-                            我持续学习新技术，保持对行业趋势的敏感度。
+                        <p data-en="I love programming and enjoy solving complex technical problems, always pursuing code elegance and efficiency. Beyond technical development, I also focus on user experience design, believing that good products require the perfect combination of technology and design. I continuously learn new technologies and maintain sensitivity to industry trends." data-zh="我热爱编程，喜欢解决复杂的技术问题，并始终追求代码的优雅和效率。除了技术开发，我还关注用户体验设计，相信好的产品需要技术与设计的完美结合。我持续学习新技术，保持对行业趋势的敏感度。">
+                            I love programming and enjoy solving complex technical problems, always pursuing code elegance and efficiency. Beyond technical development, I also focus on user experience design, believing that good products require the perfect combination of technology and design. I continuously learn new technologies and maintain sensitivity to industry trends.
                         </p>
                         <div class="about-stats">
                             <div class="stat">
-                                <h3>3+</h3>
-                                <p>年开发经验</p>
+                                <h3>1+</h3>
+                                <p data-en="Years Experience" data-zh="年开发经验">Years Experience</p>
                             </div>
                             <div class="stat">
-                                <h3>50+</h3>
-                                <p>完成项目</p>
+                                <h3>400+</h3>
+                                <p data-en="LeetCode Problems" data-zh="力扣题目">LeetCode Problems</p>
                             </div>
                             <div class="stat">
-                                <h3>10+</h3>
-                                <p>技术栈</p>
+                                <h3>15+</h3>
+                                <p data-en="Tech Stacks" data-zh="技术栈">Tech Stacks</p>
+                            </div>
+                            <div class="stat">
+                                <a href="resume.pdf" class="btn btn-primary resume-btn" download>
+                                    <i class="fas fa-download"></i>
+                                    <span data-en="Download Resume" data-zh="下载简历">Download Resume</span>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -101,93 +115,102 @@
         <!-- 技能部分 -->
         <section id="skills" class="skills">
             <div class="container">
-                <h2 class="section-title">技能专长</h2>
+                <h2 class="section-title" data-en="Technical Skills" data-zh="技能专长">Technical Skills</h2>
                 <div class="skills-grid">
-                    <div class="skill-category">
-                        <h3>前端开发</h3>
-                        <div class="skill-items">
-                            <div class="skill-item">
-                                <span>HTML/CSS</span>
-                                <div class="skill-bar">
-                                    <div class="skill-progress" data-width="90%"></div>
-                                </div>
-                            </div>
-                            <div class="skill-item">
-                                <span>JavaScript</span>
-                                <div class="skill-bar">
-                                    <div class="skill-progress" data-width="85%"></div>
-                                </div>
-                            </div>
-                            <div class="skill-item">
-                                <span>React</span>
-                                <div class="skill-bar">
-                                    <div class="skill-progress" data-width="80%"></div>
-                                </div>
-                            </div>
-                            <div class="skill-item">
-                                <span>Vue.js</span>
-                                <div class="skill-bar">
-                                    <div class="skill-progress" data-width="75%"></div>
-                                </div>
-                            </div>
+                    <div class="skill-item">
+                        <span>5G/4G Satellite Communication Networks</span>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="90%"></div>
                         </div>
                     </div>
-                    <div class="skill-category">
-                        <h3>后端开发</h3>
-                        <div class="skill-items">
-                            <div class="skill-item">
-                                <span>Python</span>
-                                <div class="skill-bar">
-                                    <div class="skill-progress" data-width="85%"></div>
-                                </div>
-                            </div>
-                            <div class="skill-item">
-                                <span>Node.js</span>
-                                <div class="skill-bar">
-                                    <div class="skill-progress" data-width="80%"></div>
-                                </div>
-                            </div>
-                            <div class="skill-item">
-                                <span>Django</span>
-                                <div class="skill-bar">
-                                    <div class="skill-progress" data-width="75%"></div>
-                                </div>
-                            </div>
-                            <div class="skill-item">
-                                <span>数据库</span>
-                                <div class="skill-bar">
-                                    <div class="skill-progress" data-width="70%"></div>
-                                </div>
-                            </div>
+                    <div class="skill-item">
+                        <span>TCP/IP Network Protocols</span>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="85%"></div>
                         </div>
                     </div>
-                    <div class="skill-category">
-                        <h3>工具与平台</h3>
-                        <div class="skill-items">
-                            <div class="skill-item">
-                                <span>Git</span>
-                                <div class="skill-bar">
-                                    <div class="skill-progress" data-width="90%"></div>
-                                </div>
-                            </div>
-                            <div class="skill-item">
-                                <span>Docker</span>
-                                <div class="skill-bar">
-                                    <div class="skill-progress" data-width="75%"></div>
-                                </div>
-                            </div>
-                            <div class="skill-item">
-                                <span>云服务</span>
-                                <div class="skill-bar">
-                                    <div class="skill-progress" data-width="70%"></div>
-                                </div>
-                            </div>
-                            <div class="skill-item">
-                                <span>Linux</span>
-                                <div class="skill-bar">
-                                    <div class="skill-progress" data-width="80%"></div>
-                                </div>
-                            </div>
+                    <div class="skill-item">
+                        <span>C/C++</span>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="75%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span>Linux</span>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="70%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span>Git</span>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="95%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span>Terraform Infrastructure as Code (IaC)</span>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="50%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span>Docker Container & Orchestration</span>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="65%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span>Software Architecture Design Patterns</span>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="70%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span>Cloud Native / Cloud Services</span>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="50%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span>Python FastAPI + Django</span>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="55%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span>AI Models</span>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="40%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span>Telemetry Observability (Prometheus+Loki+Tempo+Alertmanager+Grafana)</span>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="45%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span>SQL + NoSQL</span>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="35%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span>CI/CD</span>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="45%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span>Security Hardening</span>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="30%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span>Backup and Disaster Recovery</span>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="30%"></div>
                         </div>
                     </div>
                 </div>
@@ -197,64 +220,21 @@
         <!-- 项目部分 -->
         <section id="projects" class="projects">
             <div class="container">
-                <h2 class="section-title">精选项目</h2>
+                <h2 class="section-title" data-en="Featured Projects" data-zh="精选项目">Featured Projects</h2>
                 <div class="projects-grid">
                     <div class="project-card">
                         <div class="project-image">
-                            <i class="fas fa-globe"></i>
+                            <i class="fab fa-github"></i>
                         </div>
                         <div class="project-content">
-                            <h3>个人主页系统</h3>
-                            <p>使用现代前端技术构建的响应式个人主页，包含完整的用户界面和交互功能。</p>
-                            <div class="project-tech">
-                                <span>HTML</span>
-                                <span>CSS</span>
-                                <span>JavaScript</span>
-                            </div>
+                            <h3 data-en="GitHub Portfolio" data-zh="GitHub作品集">GitHub Portfolio</h3>
+                            <p data-en="Explore my repositories and contributions on GitHub. From network engineering projects to full-stack applications, discover the code behind my technical journey." data-zh="探索我在GitHub上的仓库和贡献。从网络工程项目到全栈应用，发现我技术之旅背后的代码。">
+                                Explore my repositories and contributions on GitHub. From network engineering projects to full-stack applications, discover the code behind my technical journey.
+                            </p>
                             <div class="project-links">
-                                <a href="#" class="project-link">
-                                    <i class="fas fa-external-link-alt"></i>
-                                    查看项目
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="project-card">
-                        <div class="project-image">
-                            <i class="fas fa-mobile-alt"></i>
-                        </div>
-                        <div class="project-content">
-                            <h3>移动应用开发</h3>
-                            <p>跨平台移动应用开发项目，提供流畅的用户体验和现代化的界面设计。</p>
-                            <div class="project-tech">
-                                <span>React Native</span>
-                                <span>JavaScript</span>
-                                <span>API</span>
-                            </div>
-                            <div class="project-links">
-                                <a href="#" class="project-link">
-                                    <i class="fas fa-external-link-alt"></i>
-                                    查看项目
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="project-card">
-                        <div class="project-image">
-                            <i class="fas fa-database"></i>
-                        </div>
-                        <div class="project-content">
-                            <h3>数据管理系统</h3>
-                            <p>企业级数据管理平台，提供数据可视化、分析和报告功能。</p>
-                            <div class="project-tech">
-                                <span>Python</span>
-                                <span>Django</span>
-                                <span>PostgreSQL</span>
-                            </div>
-                            <div class="project-links">
-                                <a href="#" class="project-link">
-                                    <i class="fas fa-external-link-alt"></i>
-                                    查看项目
+                                <a href="https://github.com/ifshen2002" target="_blank" class="project-link">
+                                    <i class="fab fa-github"></i>
+                                    <span data-en="View on GitHub" data-zh="在GitHub上查看">View on GitHub</span>
                                 </a>
                             </div>
                         </div>
@@ -266,65 +246,43 @@
         <!-- 联系我部分 -->
         <section id="contact" class="contact">
             <div class="container">
-                <h2 class="section-title">联系我</h2>
+                <h2 class="section-title" data-en="Contact Me" data-zh="联系我">Contact Me</h2>
                 <div class="contact-content">
                     <div class="contact-info">
-                        <h3>让我们开始合作吧！</h3>
-                        <p>如果您有任何项目想法或合作机会，欢迎随时联系我。</p>
+                        <h3 data-en="Let's Start Collaborating!" data-zh="让我们开始合作吧！">Let's Start Collaborating!</h3>
+                        <p data-en="If you have any project ideas or collaboration opportunities, feel free to contact me anytime." data-zh="如果您有任何项目想法或合作机会，欢迎随时联系我。">
+                            If you have any project ideas or collaboration opportunities, feel free to contact me anytime.
+                        </p>
                         <div class="contact-methods">
                             <div class="contact-method">
                                 <i class="fas fa-envelope"></i>
                                 <div>
-                                    <h4>邮箱</h4>
-                                    <p>contact@ifshen2002.com</p>
-                                </div>
-                            </div>
-                            <div class="contact-method">
-                                <i class="fas fa-phone"></i>
-                                <div>
-                                    <h4>电话</h4>
-                                    <p>+86 138-0000-0000</p>
+                                    <h4 data-en="Email" data-zh="邮箱">Email</h4>
+                                    <p>ifshen2002@gmail.com</p>
                                 </div>
                             </div>
                             <div class="contact-method">
                                 <i class="fas fa-map-marker-alt"></i>
                                 <div>
-                                    <h4>位置</h4>
-                                    <p>中国，北京</p>
+                                    <h4 data-en="Location" data-zh="位置">Location</h4>
+                                    <p data-en="Singapore, China" data-zh="新加坡，中国">Singapore, China</p>
                                 </div>
                             </div>
                         </div>
                         <div class="social-links">
-                            <a href="#" class="social-link">
+                            <a href="https://github.com/ifshen2002" target="_blank" class="social-link" title="GitHub">
                                 <i class="fab fa-github"></i>
                             </a>
-                            <a href="#" class="social-link">
+                            <a href="https://www.linkedin.com/in/yifan-shen-a4a100350/" target="_blank" class="social-link" title="LinkedIn">
                                 <i class="fab fa-linkedin"></i>
                             </a>
-                            <a href="#" class="social-link">
-                                <i class="fab fa-twitter"></i>
+                            <a href="mailto:ifshen2002@gmail.com" class="social-link" title="Email">
+                                <i class="fas fa-envelope"></i>
                             </a>
-                            <a href="#" class="social-link">
+                            <a href="https://weixin.qq.com/" class="social-link" title="WeChat: nyushenshen">
                                 <i class="fab fa-weixin"></i>
                             </a>
                         </div>
-                    </div>
-                    <div class="contact-form">
-                        <form id="contactForm">
-                            <div class="form-group">
-                                <input type="text" id="name" name="name" placeholder="您的姓名" required>
-                            </div>
-                            <div class="form-group">
-                                <input type="email" id="email" name="email" placeholder="您的邮箱" required>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" id="subject" name="subject" placeholder="主题" required>
-                            </div>
-                            <div class="form-group">
-                                <textarea id="message" name="message" placeholder="您的消息" rows="5" required></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary">发送消息</button>
-                        </form>
                     </div>
                 </div>
             </div>
@@ -336,14 +294,14 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-text">
-                    <p>&copy; 2024 IFSHEN2002. 保留所有权利。</p>
+                    <p data-en="&copy; 2024 YIFAN SHEN. All rights reserved." data-zh="&copy; 2024 申一帆. 保留所有权利。">&copy; 2024 YIFAN SHEN. All rights reserved.</p>
                 </div>
                 <div class="footer-links">
-                    <a href="#home">首页</a>
-                    <a href="#about">关于我</a>
-                    <a href="#skills">技能</a>
-                    <a href="#projects">项目</a>
-                    <a href="#contact">联系我</a>
+                    <a href="#home" data-en="Home" data-zh="首页">Home</a>
+                    <a href="#about" data-en="About" data-zh="关于我">About</a>
+                    <a href="#skills" data-en="Skills" data-zh="技能">Skills</a>
+                    <a href="#projects" data-en="Projects" data-zh="项目">Projects</a>
+                    <a href="#contact" data-en="Contact" data-zh="联系我">Contact</a>
                 </div>
             </div>
         </div>
