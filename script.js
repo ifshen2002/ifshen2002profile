@@ -267,7 +267,8 @@ function initTypingEffect() {
     if (!heroTitle) return;
     
     const originalText = heroTitle.innerHTML;
-    const textToType = '你好，我是申一帆';
+    const currentLang = localStorage.getItem('language') || 'en';
+    const textToType = currentLang === 'zh' ? '你好，我是申一帆' : 'Hello, I am ifshen2002';
     
     // 只在首次加载时执行
     let hasTyped = false;
@@ -276,7 +277,7 @@ function initTypingEffect() {
         entries.forEach(entry => {
             if (entry.isIntersecting && !hasTyped) {
                 hasTyped = true;
-                typeWriter(heroTitle, textToType, 100);
+                typeWriter(heroTitle, textToType, 100, currentLang);
             }
         });
     });
@@ -284,7 +285,7 @@ function initTypingEffect() {
     observer.observe(heroTitle);
 }
 
-function typeWriter(element, text, speed) {
+function typeWriter(element, text, speed, lang) {
     element.innerHTML = '';
     let i = 0;
     
@@ -296,7 +297,11 @@ function typeWriter(element, text, speed) {
         } else {
             // 打字完成后恢复原始内容
             setTimeout(() => {
-                element.innerHTML = '你好，我是 <span class="highlight">申一帆</span>';
+                if (lang === 'zh') {
+                    element.innerHTML = '你好，我是 <span class="highlight">申一帆</span>';
+                } else {
+                    element.innerHTML = 'Hello, I am <span class="highlight">ifshen2002</span>';
+                }
             }, 1000);
         }
     }
@@ -514,6 +519,13 @@ function setLanguage(lang) {
             btn.classList.add('active');
         }
     });
+    
+    // 更新标题的打字机效果
+    const heroTitle = document.querySelector('.hero-title');
+    if (heroTitle) {
+        const textToType = lang === 'zh' ? '你好，我是申一帆' : 'Hello, I am ifshen2002';
+        typeWriter(heroTitle, textToType, 100, lang);
+    }
 }
 
 // 访问量统计功能
