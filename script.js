@@ -517,13 +517,44 @@ function setLanguage(lang) {
 
 // 访问量统计功能
 function initVisitCounter() {
-    let visitCount = localStorage.getItem('visitCount') || 0;
-    visitCount = parseInt(visitCount) + 1;
-    localStorage.setItem('visitCount', visitCount);
+    // 使用GitHub API获取访问量
+    fetchVisitorCount();
     
+    // 本地计数作为备用
+    let localCount = localStorage.getItem('visitCount') || 0;
+    localCount = parseInt(localCount) + 1;
+    localStorage.setItem('visitCount', localCount);
+}
+
+async function fetchVisitorCount() {
+    try {
+        // 使用GitHub API获取仓库的访问统计
+        const response = await fetch('https://api.github.com/repos/ifshen2002/ifshen2002profile/traffic/views', {
+            headers: {
+                'Accept': 'application/vnd.github.v3+json'
+            }
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            const totalViews = data.count || 0;
+            updateVisitorDisplay(totalViews);
+        } else {
+            // 如果API失败，使用本地计数
+            const localCount = localStorage.getItem('visitCount') || 0;
+            updateVisitorDisplay(parseInt(localCount));
+        }
+    } catch (error) {
+        console.log('使用本地访问统计');
+        const localCount = localStorage.getItem('visitCount') || 0;
+        updateVisitorDisplay(parseInt(localCount));
+    }
+}
+
+function updateVisitorDisplay(count) {
     const counterElement = document.getElementById('visit-count');
     if (counterElement) {
-        counterElement.textContent = visitCount.toLocaleString();
+        counterElement.textContent = count.toLocaleString();
     }
 }
 
