@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initTypingEffect();
     initLanguageSwitcher();
     initVisitCounter();
+    initResumeDownload();
 });
 
 // 导航栏功能
@@ -266,7 +267,7 @@ function initTypingEffect() {
     if (!heroTitle) return;
     
     const originalText = heroTitle.innerHTML;
-    const textToType = '你好，我是 IFSHEN2002';
+    const textToType = '你好，我是申一帆';
     
     // 只在首次加载时执行
     let hasTyped = false;
@@ -295,7 +296,7 @@ function typeWriter(element, text, speed) {
         } else {
             // 打字完成后恢复原始内容
             setTimeout(() => {
-                element.innerHTML = '你好，我是 <span class="highlight">IFSHEN2002</span>';
+                element.innerHTML = '你好，我是 <span class="highlight">申一帆</span>';
             }, 1000);
         }
     }
@@ -556,6 +557,249 @@ function updateVisitorDisplay(count) {
     if (counterElement) {
         counterElement.textContent = count.toLocaleString();
     }
+}
+
+// 简历下载功能
+function initResumeDownload() {
+    const resumeBtn = document.querySelector('.resume-btn');
+    if (resumeBtn) {
+        resumeBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            showPasswordModal();
+        });
+    }
+}
+
+function showPasswordModal() {
+    // 创建模态框
+    const modal = document.createElement('div');
+    modal.className = 'password-modal';
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+    `;
+    
+    // 创建模态框内容
+    const modalContent = document.createElement('div');
+    modalContent.style.cssText = `
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        max-width: 400px;
+        width: 90%;
+        text-align: center;
+    `;
+    
+    // 获取当前语言
+    const currentLang = localStorage.getItem('language') || 'en';
+    
+    modalContent.innerHTML = `
+        <h3 style="margin-bottom: 1rem; color: #1f2937;">${currentLang === 'zh' ? '简历下载' : 'Resume Download'}</h3>
+        <p style="margin-bottom: 1rem; color: #6b7280; font-size: 0.9rem;">
+            ${currentLang === 'zh' ? '请输入密码下载简历' : 'Please enter password to download resume'}
+        </p>
+        <input type="password" id="password-input" placeholder="${currentLang === 'zh' ? '密码' : 'Password'}" 
+               style="width: 100%; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px; margin-bottom: 1rem; font-size: 1rem;">
+        <div style="display: flex; gap: 1rem; justify-content: center;">
+            <button id="download-btn" style="padding: 0.75rem 1.5rem; background: #2563eb; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                ${currentLang === 'zh' ? '下载' : 'Download'}
+            </button>
+            <button id="cancel-btn" style="padding: 0.75rem 1.5rem; background: #6b7280; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                ${currentLang === 'zh' ? '取消' : 'Cancel'}
+            </button>
+        </div>
+        <p style="margin-top: 1rem; color: #9ca3af; font-size: 0.8rem;">
+            ${currentLang === 'zh' ? '如需密码，请联系 ifshen2002@gmail.com' : 'For password, please contact ifshen2002@gmail.com'}
+        </p>
+    `;
+    
+    modal.appendChild(modalContent);
+    document.body.appendChild(modal);
+    
+    // 添加事件监听
+    const passwordInput = modalContent.querySelector('#password-input');
+    const downloadBtn = modalContent.querySelector('#download-btn');
+    const cancelBtn = modalContent.querySelector('#cancel-btn');
+    
+    // 取消按钮
+    cancelBtn.addEventListener('click', function() {
+        document.body.removeChild(modal);
+    });
+    
+    // 点击模态框外部关闭
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            document.body.removeChild(modal);
+        }
+    });
+    
+    // 下载按钮
+    downloadBtn.addEventListener('click', function() {
+        const password = passwordInput.value;
+        if (password === '2002') {
+            downloadResume(currentLang);
+            updateDownloadCount();
+            document.body.removeChild(modal);
+            showNotification(
+                currentLang === 'zh' ? '简历下载成功！' : 'Resume downloaded successfully!', 
+                'success'
+            );
+        } else {
+            showNotification(
+                currentLang === 'zh' ? '密码错误，请重试' : 'Wrong password, please try again', 
+                'error'
+            );
+            passwordInput.value = '';
+            passwordInput.focus();
+        }
+    });
+    
+    // 回车键提交
+    passwordInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            downloadBtn.click();
+        }
+    });
+    
+    // 自动聚焦到输入框
+    setTimeout(() => {
+        passwordInput.focus();
+    }, 100);
+}
+
+function downloadResume(lang) {
+    // 根据语言选择不同的简历文件
+    const filename = lang === 'zh' ? 'YIFAN-简历中文.zip' : 'YIFAN-Resume.zip';
+    const currentLang = localStorage.getItem('language') || 'en';
+    
+    // 显示下载提示
+    showNotification(
+        currentLang === 'zh' ? '正在准备下载...' : 'Preparing download...', 
+        'info'
+    );
+    
+    // 创建下载链接
+    const link = document.createElement('a');
+    link.href = `resumes/${filename}`;
+    link.download = filename;
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    // 显示密码提示弹窗
+    setTimeout(() => {
+        showPasswordHintModal(currentLang);
+    }, 500);
+    
+    // 延迟显示成功消息
+    setTimeout(() => {
+        showNotification(
+            currentLang === 'zh' ? '简历下载成功！' : 'Resume downloaded successfully!', 
+            'success'
+        );
+    }, 1000);
+}
+
+function showPasswordHintModal(lang) {
+    // 创建密码提示模态框
+    const modal = document.createElement('div');
+    modal.className = 'password-hint-modal';
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+    `;
+    
+    // 创建模态框内容
+    const modalContent = document.createElement('div');
+    modalContent.style.cssText = `
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        max-width: 450px;
+        width: 90%;
+        text-align: center;
+    `;
+    
+    modalContent.innerHTML = `
+        <div style="margin-bottom: 1.5rem;">
+            <i class="fas fa-lock" style="font-size: 3rem; color: #2563eb; margin-bottom: 1rem;"></i>
+            <h3 style="margin-bottom: 1rem; color: #1f2937;">
+                ${lang === 'zh' ? '文件已加密' : 'File is Encrypted'}
+            </h3>
+            <p style="margin-bottom: 1rem; color: #6b7280; line-height: 1.6;">
+                ${lang === 'zh' ? '下载的简历文件已加密保护，需要密码才能打开。' : 'The downloaded resume file is encrypted and requires a password to open.'}
+            </p>
+            <div style="background: #f8fafc; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <p style="margin: 0; color: #374151; font-weight: 600;">
+                    ${lang === 'zh' ? '解压密码：2002' : 'Extraction Password: 2002'}
+                </p>
+            </div>
+            <p style="margin-top: 1rem; color: #9ca3af; font-size: 0.9rem;">
+                ${lang === 'zh' ? '如需密码，请联系管理员：' : 'For password assistance, contact admin:'}
+                <br>
+                <strong style="color: #2563eb;">ifshen2002@gmail.com</strong>
+            </p>
+        </div>
+        <button id="close-hint-btn" style="padding: 0.75rem 2rem; background: #2563eb; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+            ${lang === 'zh' ? '我知道了' : 'Got it'}
+        </button>
+    `;
+    
+    modal.appendChild(modalContent);
+    document.body.appendChild(modal);
+    
+    // 添加事件监听
+    const closeBtn = modalContent.querySelector('#close-hint-btn');
+    
+    // 关闭按钮
+    closeBtn.addEventListener('click', function() {
+        document.body.removeChild(modal);
+    });
+    
+    // 点击模态框外部关闭
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            document.body.removeChild(modal);
+        }
+    });
+    
+    // ESC键关闭
+    const handleEsc = function(e) {
+        if (e.key === 'Escape') {
+            document.body.removeChild(modal);
+            document.removeEventListener('keydown', handleEsc);
+        }
+    };
+    document.addEventListener('keydown', handleEsc);
+}
+
+function updateDownloadCount() {
+    // 更新下载次数统计
+    let downloadCount = localStorage.getItem('resumeDownloadCount') || 0;
+    downloadCount = parseInt(downloadCount) + 1;
+    localStorage.setItem('resumeDownloadCount', downloadCount);
+    
+    // 可以在这里添加其他统计逻辑，比如发送到服务器
+    console.log(`Resume downloaded ${downloadCount} times`);
 }
 
 // 控制台欢迎信息
