@@ -8,8 +8,26 @@
     <link rel="stylesheet" href="styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- 不蒜子访问统计 -->
+    <!-- 访问统计 -->
     <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <!-- 简单的访问统计 -->
+    <script>
+        // 简单的访问统计
+        window.addEventListener('load', function() {
+            // 发送访问统计到简单的API
+            fetch('https://api.countapi.xyz/hit/ifshen2002profile/visits')
+                .then(response => response.json())
+                .then(data => {
+                    const counterElement = document.getElementById('visit-count');
+                    if (counterElement && data.value) {
+                        counterElement.textContent = data.value.toLocaleString();
+                    }
+                })
+                .catch(error => {
+                    console.log('访问统计API失败，使用本地统计');
+                });
+        });
+    </script>
 </head>
 <body>
     <!-- 导航栏 -->
@@ -23,6 +41,7 @@
                 <a href="#about" class="nav-link" data-en="About" data-zh="关于我">About</a>
                 <a href="#skills" class="nav-link" data-en="Skills" data-zh="技能">Skills</a>
                 <a href="#projects" class="nav-link" data-en="Projects" data-zh="项目">Projects</a>
+                <a href="#gallery" class="nav-link" data-en="Gallery" data-zh="个人风采">Gallery</a>
                 <a href="#contact" class="nav-link" data-en="Contact" data-zh="联系我">Contact</a>
             </div>
             <div class="nav-actions">
@@ -245,6 +264,109 @@
             </div>
         </section>
 
+        <!-- 个人风采部分 -->
+        <section id="gallery" class="gallery">
+            <div class="container">
+                <h2 class="section-title" data-en="Personal Gallery" data-zh="个人风采">Personal Gallery</h2>
+                <p class="gallery-subtitle" data-en="Capturing moments from my journey in technology and life" data-zh="记录我在技术和生活中的精彩瞬间">
+                    Capturing moments from my journey in technology and life
+                </p>
+                <div class="gallery-grid">
+                    <!-- 你的真实照片 -->
+                    <div class="gallery-item" data-category="personal">
+                        <div class="gallery-image">
+                            <img src="photos/p1.jpg" alt="Personal Photo 1" loading="lazy">
+                            <div class="gallery-overlay">
+                                <div class="gallery-info">
+                                    <h3 data-en="Personal Moment" data-zh="个人时刻">Personal Moment</h3>
+                                    <p data-en="Capturing life's beautiful moments" data-zh="记录生活中的美好时刻">
+                                        Capturing life's beautiful moments
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item" data-category="personal">
+                        <div class="gallery-image">
+                            <img src="photos/p2.jpg" alt="Personal Photo 2" loading="lazy">
+                            <div class="gallery-overlay">
+                                <div class="gallery-info">
+                                    <h3 data-en="Personal Moment" data-zh="个人时刻">Personal Moment</h3>
+                                    <p data-en="Capturing life's beautiful moments" data-zh="记录生活中的美好时刻">
+                                        Capturing life's beautiful moments
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 预留空位 - 你可以添加更多照片 -->
+                    <div class="gallery-item placeholder" data-category="coming-soon" style="display: none;">
+                        <div class="gallery-image">
+                            <img src="photos/p3.jpg" alt="Personal Photo 3" loading="lazy">
+                            <div class="gallery-overlay">
+                                <div class="gallery-info">
+                                    <h3 data-en="Personal Moment" data-zh="个人时刻">Personal Moment</h3>
+                                    <p data-en="Capturing life's beautiful moments" data-zh="记录生活中的美好时刻">
+                                        Capturing life's beautiful moments
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item placeholder" data-category="coming-soon" style="display: none;">
+                        <div class="gallery-image">
+                            <img src="photos/p4.jpg" alt="Personal Photo 4" loading="lazy">
+                            <div class="gallery-overlay">
+                                <div class="gallery-info">
+                                    <h3 data-en="Personal Moment" data-zh="个人时刻">Personal Moment</h3>
+                                    <p data-en="Capturing life's beautiful moments" data-zh="记录生活中的美好时刻">
+                                        Capturing life's beautiful moments
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item placeholder" data-category="coming-soon" style="display: none;">
+                        <div class="gallery-image">
+                            <img src="photos/p5.jpg" alt="Personal Photo 5" loading="lazy">
+                            <div class="gallery-overlay">
+                                <div class="gallery-info">
+                                    <h3 data-en="Personal Moment" data-zh="个人时刻">Personal Moment</h3>
+                                    <p data-en="Capturing life's beautiful moments" data-zh="记录生活中的美好时刻">
+                                        Capturing life's beautiful moments
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item placeholder" data-category="coming-soon" style="display: none;">
+                        <div class="gallery-image">
+                            <img src="photos/p6.jpg" alt="Personal Photo 6" loading="lazy">
+                            <div class="gallery-overlay">
+                                <div class="gallery-info">
+                                    <h3 data-en="Personal Moment" data-zh="个人时刻">Personal Moment</h3>
+                                    <p data-en="Capturing life's beautiful moments" data-zh="记录生活中的美好时刻">
+                                        Capturing life's beautiful moments
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 照片分类筛选 -->
+                <div class="gallery-filters">
+                    <button class="filter-btn active" data-filter="all" data-en="All" data-zh="全部">All</button>
+                    <button class="filter-btn" data-filter="personal" data-en="Personal" data-zh="个人">Personal</button>
+                </div>
+            </div>
+        </section>
+
         <!-- 联系我部分 -->
         <section id="contact" class="contact">
             <div class="container">
@@ -303,6 +425,7 @@
                     <a href="#about" data-en="About" data-zh="关于我">About</a>
                     <a href="#skills" data-en="Skills" data-zh="技能">Skills</a>
                     <a href="#projects" data-en="Projects" data-zh="项目">Projects</a>
+                    <a href="#gallery" data-en="Gallery" data-zh="个人风采">Gallery</a>
                     <a href="#contact" data-en="Contact" data-zh="联系我">Contact</a>
                 </div>
             </div>

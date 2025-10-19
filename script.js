@@ -10,6 +10,10 @@ document.addEventListener('DOMContentLoaded', function() {
     initLanguageSwitcher();
     initVisitCounter();
     initResumeDownload();
+    initParticleBackground();
+    initMouseTrail();
+    initThemeToggle();
+    initGallery();
 });
 
 // 导航栏功能
@@ -530,46 +534,30 @@ function setLanguage(lang) {
 
 // 访问量统计功能
 function initVisitCounter() {
-    // 使用GitHub API获取访问量
-    fetchVisitorCount();
-    
-    // 本地计数作为备用
+    // 使用本地计数作为备用
     let localCount = localStorage.getItem('visitCount') || 0;
     localCount = parseInt(localCount) + 1;
     localStorage.setItem('visitCount', localCount);
-}
-
-async function fetchVisitorCount() {
-    try {
-        // 使用GitHub API获取仓库的访问统计
-        const response = await fetch('https://api.github.com/repos/ifshen2002/ifshen2002profile/traffic/views', {
-            headers: {
-                'Accept': 'application/vnd.github.v3+json'
-            }
-        });
-        
-        if (response.ok) {
-            const data = await response.json();
-            const totalViews = data.count || 0;
-            updateVisitorDisplay(totalViews);
-        } else {
-            // 如果API失败，使用本地计数
-            const localCount = localStorage.getItem('visitCount') || 0;
-            updateVisitorDisplay(parseInt(localCount));
-        }
-    } catch (error) {
-        console.log('使用本地访问统计');
-        const localCount = localStorage.getItem('visitCount') || 0;
-        updateVisitorDisplay(parseInt(localCount));
-    }
-}
-
-function updateVisitorDisplay(count) {
+    
+    // 显示本地计数
     const counterElement = document.getElementById('visit-count');
     if (counterElement) {
-        counterElement.textContent = count.toLocaleString();
+        counterElement.textContent = localCount.toLocaleString();
     }
+    
+    // 尝试使用CountAPI
+    fetch('https://api.countapi.xyz/hit/ifshen2002profile/visits')
+        .then(response => response.json())
+        .then(data => {
+            if (data.value && data.value > 0) {
+                counterElement.textContent = data.value.toLocaleString();
+            }
+        })
+        .catch(error => {
+            console.log('CountAPI失败，使用本地统计');
+        });
 }
+
 
 // 简历下载功能
 function initResumeDownload() {
@@ -812,6 +800,392 @@ function updateDownloadCount() {
     
     // 可以在这里添加其他统计逻辑，比如发送到服务器
     console.log(`Resume downloaded ${downloadCount} times`);
+}
+
+// 粒子背景动画
+function initParticleBackground() {
+    const canvas = document.createElement('canvas');
+    canvas.id = 'particle-canvas';
+    canvas.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: -1;
+        opacity: 0.6;
+    `;
+    document.body.appendChild(canvas);
+    
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let mouse = { x: 0, y: 0 };
+    
+    // 调整画布大小
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    
+    // 粒子类
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.vx = (Math.random() - 0.5) * 0.5;
+            this.vy = (Math.random() - 0.5) * 0.5;
+            this.size = Math.random() * 2 + 1;
+            this.opacity = Math.random() * 0.5 + 0.2;
+        }
+        
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            
+            // 边界检测
+            if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+            if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            
+            // 鼠标交互
+            const dx = mouse.x - this.x;
+            const dy = mouse.y - this.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance < 100) {
+                this.vx += dx * 0.0001;
+                this.vy += dy * 0.0001;
+            }
+        }
+        
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(37, 99, 235, ${this.opacity})`;
+            ctx.fill();
+        }
+    }
+    
+    // 初始化粒子
+    function initParticles() {
+        particles = [];
+        for (let i = 0; i < 50; i++) {
+            particles.push(new Particle());
+        }
+    }
+    
+    // 动画循环
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        particles.forEach(particle => {
+            particle.update();
+            particle.draw();
+        });
+        
+        // 绘制连线
+        particles.forEach((particle, i) => {
+            particles.slice(i + 1).forEach(otherParticle => {
+                const dx = particle.x - otherParticle.x;
+                const dy = particle.y - otherParticle.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance < 100) {
+                    ctx.beginPath();
+                    ctx.moveTo(particle.x, particle.y);
+                    ctx.lineTo(otherParticle.x, otherParticle.y);
+                    ctx.strokeStyle = `rgba(37, 99, 235, ${0.1 - distance / 1000})`;
+                    ctx.lineWidth = 0.5;
+                    ctx.stroke();
+                }
+            });
+        });
+        
+        requestAnimationFrame(animate);
+    }
+    
+    // 鼠标移动事件
+    document.addEventListener('mousemove', (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+    });
+    
+    // 窗口大小改变
+    window.addEventListener('resize', () => {
+        resizeCanvas();
+        initParticles();
+    });
+    
+    // 初始化
+    resizeCanvas();
+    initParticles();
+    animate();
+}
+
+// 鼠标跟随光效
+function initMouseTrail() {
+    const trail = [];
+    const trailLength = 20;
+    
+    document.addEventListener('mousemove', (e) => {
+        trail.push({ x: e.clientX, y: e.clientY, time: Date.now() });
+        
+        if (trail.length > trailLength) {
+            trail.shift();
+        }
+        
+        // 清理旧的光点
+        const now = Date.now();
+        for (let i = trail.length - 1; i >= 0; i--) {
+            if (now - trail[i].time > 1000) {
+                trail.splice(i, 1);
+            }
+        }
+        
+        // 绘制光效
+        drawTrail();
+    });
+    
+    function drawTrail() {
+        // 移除旧的光效元素
+        document.querySelectorAll('.mouse-trail').forEach(el => el.remove());
+        
+        trail.forEach((point, index) => {
+            const dot = document.createElement('div');
+            dot.className = 'mouse-trail';
+            dot.style.cssText = `
+                position: fixed;
+                left: ${point.x}px;
+                top: ${point.y}px;
+                width: 4px;
+                height: 4px;
+                background: radial-gradient(circle, rgba(37, 99, 235, 0.8) 0%, transparent 70%);
+                border-radius: 50%;
+                pointer-events: none;
+                z-index: 9999;
+                transform: translate(-50%, -50%);
+                opacity: ${(index + 1) / trail.length};
+                transition: opacity 0.1s ease;
+            `;
+            document.body.appendChild(dot);
+            
+            // 自动移除
+            setTimeout(() => {
+                if (dot.parentNode) {
+                    dot.parentNode.removeChild(dot);
+                }
+            }, 100);
+        });
+    }
+}
+
+// 主题切换功能
+function initThemeToggle() {
+    // 创建主题切换按钮
+    const themeToggle = document.createElement('button');
+    themeToggle.id = 'theme-toggle';
+    themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+    themeToggle.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        border: none;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.9);
+        color: #1f2937;
+        cursor: pointer;
+        font-size: 1.2rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transition: all 0.3s ease;
+        z-index: 1000;
+        backdrop-filter: blur(10px);
+    `;
+    
+    document.body.appendChild(themeToggle);
+    
+    // 获取当前主题
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    
+    // 更新按钮图标
+    function updateThemeIcon(theme) {
+        themeToggle.innerHTML = theme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+    }
+    
+    updateThemeIcon(currentTheme);
+    
+    // 主题切换事件
+    themeToggle.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateThemeIcon(newTheme);
+        
+        // 添加切换动画
+        themeToggle.style.transform = 'scale(0.8)';
+        setTimeout(() => {
+            themeToggle.style.transform = 'scale(1)';
+        }, 150);
+    });
+    
+    // 悬停效果
+    themeToggle.addEventListener('mouseenter', () => {
+        themeToggle.style.transform = 'scale(1.1)';
+        themeToggle.style.background = 'rgba(37, 99, 235, 0.1)';
+    });
+    
+    themeToggle.addEventListener('mouseleave', () => {
+        themeToggle.style.transform = 'scale(1)';
+        themeToggle.style.background = 'rgba(255, 255, 255, 0.9)';
+    });
+}
+
+// 画廊功能
+function initGallery() {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    
+    // 自动检测并显示可用的照片
+    checkAndShowAvailablePhotos();
+    
+    // 筛选功能
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const filter = this.getAttribute('data-filter');
+            
+            // 更新按钮状态
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            
+            // 筛选图片
+            galleryItems.forEach(item => {
+                const category = item.getAttribute('data-category');
+                
+                if (filter === 'all' || category === filter) {
+                    item.classList.remove('hidden');
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+        });
+    });
+    
+    // 图片点击放大功能
+    galleryItems.forEach(item => {
+        item.addEventListener('click', function() {
+            const img = this.querySelector('img');
+            const title = this.querySelector('.gallery-info h3').textContent;
+            const description = this.querySelector('.gallery-info p').textContent;
+            
+            showImageModal(img.src, title, description);
+        });
+    });
+}
+
+// 检测并显示可用的照片
+function checkAndShowAvailablePhotos() {
+    const placeholderItems = document.querySelectorAll('.gallery-item.placeholder');
+    
+    placeholderItems.forEach(item => {
+        const img = item.querySelector('img');
+        const imageSrc = img.src;
+        
+        // 检查图片是否存在
+        const testImg = new Image();
+        testImg.onload = function() {
+            // 图片存在，显示这个项目
+            item.style.display = 'block';
+            item.classList.remove('placeholder');
+            item.setAttribute('data-category', 'personal');
+        };
+        testImg.onerror = function() {
+            // 图片不存在，保持隐藏
+            item.style.display = 'none';
+        };
+        testImg.src = imageSrc;
+    });
+}
+
+// 图片放大模态框
+function showImageModal(imageSrc, title, description) {
+    const modal = document.createElement('div');
+    modal.className = 'image-modal';
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    `;
+    
+    const modalContent = document.createElement('div');
+    modalContent.style.cssText = `
+        max-width: 90%;
+        max-height: 90%;
+        position: relative;
+        transform: scale(0.8);
+        transition: transform 0.3s ease;
+    `;
+    
+    modalContent.innerHTML = `
+        <img src="${imageSrc}" alt="${title}" style="max-width: 100%; max-height: 100%; border-radius: 10px;">
+        <div style="position: absolute; bottom: -60px; left: 0; right: 0; text-align: center; color: white;">
+            <h3 style="margin-bottom: 0.5rem; font-size: 1.25rem;">${title}</h3>
+            <p style="opacity: 0.8; font-size: 0.9rem;">${description}</p>
+        </div>
+        <button id="close-image-modal" style="position: absolute; top: -40px; right: 0; background: rgba(255, 255, 255, 0.2); border: none; color: white; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 1.2rem;">
+            <i class="fas fa-times"></i>
+        </button>
+    `;
+    
+    modal.appendChild(modalContent);
+    document.body.appendChild(modal);
+    
+    // 显示动画
+    setTimeout(() => {
+        modal.style.opacity = '1';
+        modalContent.style.transform = 'scale(1)';
+    }, 10);
+    
+    // 关闭功能
+    const closeBtn = modalContent.querySelector('#close-image-modal');
+    closeBtn.addEventListener('click', closeImageModal);
+    
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            closeImageModal();
+        }
+    });
+    
+    // ESC键关闭
+    const handleEsc = function(e) {
+        if (e.key === 'Escape') {
+            closeImageModal();
+            document.removeEventListener('keydown', handleEsc);
+        }
+    };
+    document.addEventListener('keydown', handleEsc);
+    
+    function closeImageModal() {
+        modal.style.opacity = '0';
+        modalContent.style.transform = 'scale(0.8)';
+        setTimeout(() => {
+            if (modal.parentNode) {
+                modal.parentNode.removeChild(modal);
+            }
+        }, 300);
+    }
 }
 
 // 控制台欢迎信息
