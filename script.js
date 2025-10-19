@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initMouseTrail();
     initThemeToggle();
     initGallery();
+    initImageProtection();
 });
 
 // 导航栏功能
@@ -1074,8 +1075,131 @@ function initGallery() {
         });
     });
     
-    // 图片点击放大功能
+    // 图片点击需要密码验证
     galleryItems.forEach(item => {
+        item.addEventListener('click', function() {
+            showGalleryPasswordModal();
+        });
+    });
+}
+
+// 画廊密码验证模态框
+function showGalleryPasswordModal() {
+    // 创建模态框
+    const modal = document.createElement('div');
+    modal.className = 'gallery-password-modal';
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+    `;
+    
+    // 创建模态框内容
+    const modalContent = document.createElement('div');
+    modalContent.style.cssText = `
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        max-width: 400px;
+        width: 90%;
+        text-align: center;
+    `;
+    
+    // 获取当前语言
+    const currentLang = localStorage.getItem('language') || 'en';
+    
+    modalContent.innerHTML = `
+        <div style="margin-bottom: 1.5rem;">
+            <i class="fas fa-images" style="font-size: 3rem; color: #2563eb; margin-bottom: 1rem;"></i>
+            <h3 style="margin-bottom: 1rem; color: #1f2937;">
+                ${currentLang === 'zh' ? '个人风采查看' : 'Personal Gallery Access'}
+            </h3>
+            <p style="margin-bottom: 1rem; color: #6b7280; font-size: 0.9rem;">
+                ${currentLang === 'zh' ? '请输入密码查看个人风采照片' : 'Please enter password to view personal gallery'}
+            </p>
+            <input type="password" id="gallery-password-input" placeholder="${currentLang === 'zh' ? '密码' : 'Password'}" 
+                   style="width: 100%; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px; margin-bottom: 1rem; font-size: 1rem;">
+            <div style="display: flex; gap: 1rem; justify-content: center;">
+                <button id="gallery-access-btn" style="padding: 0.75rem 1.5rem; background: #2563eb; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                    ${currentLang === 'zh' ? '查看' : 'View'}
+                </button>
+                <button id="gallery-cancel-btn" style="padding: 0.75rem 1.5rem; background: #6b7280; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                    ${currentLang === 'zh' ? '取消' : 'Cancel'}
+                </button>
+            </div>
+            <p style="margin-top: 1rem; color: #9ca3af; font-size: 0.8rem;">
+                ${currentLang === 'zh' ? '如需密码，请联系 ifshen2002@gmail.com' : 'For password, please contact ifshen2002@gmail.com'}
+            </p>
+        </div>
+    `;
+    
+    modal.appendChild(modalContent);
+    document.body.appendChild(modal);
+    
+    // 添加事件监听
+    const passwordInput = modalContent.querySelector('#gallery-password-input');
+    const accessBtn = modalContent.querySelector('#gallery-access-btn');
+    const cancelBtn = modalContent.querySelector('#gallery-cancel-btn');
+    
+    // 取消按钮
+    cancelBtn.addEventListener('click', function() {
+        document.body.removeChild(modal);
+    });
+    
+    // 点击模态框外部关闭
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            document.body.removeChild(modal);
+        }
+    });
+    
+    // 访问按钮
+    accessBtn.addEventListener('click', function() {
+        const password = passwordInput.value;
+        if (password === '2002') {
+            document.body.removeChild(modal);
+            showGalleryAccess();
+            showNotification(
+                currentLang === 'zh' ? '密码正确，可以查看照片了！' : 'Password correct, you can now view photos!', 
+                'success'
+            );
+        } else {
+            showNotification(
+                currentLang === 'zh' ? '密码错误，请重试' : 'Wrong password, please try again', 
+                'error'
+            );
+            passwordInput.value = '';
+            passwordInput.focus();
+        }
+    });
+    
+    // 回车键提交
+    passwordInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            accessBtn.click();
+        }
+    });
+    
+    // 自动聚焦到输入框
+    setTimeout(() => {
+        passwordInput.focus();
+    }, 100);
+}
+
+// 显示画廊访问界面
+function showGalleryAccess() {
+    // 移除密码保护
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    galleryItems.forEach(item => {
+        item.style.cursor = 'pointer';
         item.addEventListener('click', function() {
             const img = this.querySelector('img');
             const title = this.querySelector('.gallery-info h3').textContent;
@@ -1084,6 +1208,33 @@ function initGallery() {
             showImageModal(img.src, title, description);
         });
     });
+    
+    // 显示访问提示
+    const gallerySection = document.getElementById('gallery');
+    if (gallerySection) {
+        const accessNotice = document.createElement('div');
+        accessNotice.style.cssText = `
+            background: rgba(37, 99, 235, 0.1);
+            border: 1px solid rgba(37, 99, 235, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: #2563eb;
+            font-weight: 500;
+        `;
+        accessNotice.innerHTML = `
+            <i class="fas fa-check-circle"></i>
+            <span data-en="Gallery access granted! Click on photos to view them in full size." data-zh="画廊访问已授权！点击照片可查看大图。">
+                Gallery access granted! Click on photos to view them in full size.
+            </span>
+        `;
+        
+        const container = gallerySection.querySelector('.container');
+        if (container) {
+            container.insertBefore(accessNotice, container.querySelector('.gallery-grid'));
+        }
+    }
 }
 
 // 检测并显示可用的照片
@@ -1186,6 +1337,95 @@ function showImageModal(imageSrc, title, description) {
             }
         }, 300);
     }
+}
+
+// 图片保护功能
+function initImageProtection() {
+    // 禁用右键菜单
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        return false;
+    });
+    
+    // 禁用拖拽
+    document.addEventListener('dragstart', function(e) {
+        e.preventDefault();
+        return false;
+    });
+    
+    // 禁用选择
+    document.addEventListener('selectstart', function(e) {
+        e.preventDefault();
+        return false;
+    });
+    
+    // 禁用F12和开发者工具快捷键
+    document.addEventListener('keydown', function(e) {
+        // 禁用F12
+        if (e.keyCode === 123) {
+            e.preventDefault();
+            return false;
+        }
+        
+        // 禁用Ctrl+Shift+I (开发者工具)
+        if (e.ctrlKey && e.shiftKey && e.keyCode === 73) {
+            e.preventDefault();
+            return false;
+        }
+        
+        // 禁用Ctrl+U (查看源代码)
+        if (e.ctrlKey && e.keyCode === 85) {
+            e.preventDefault();
+            return false;
+        }
+        
+        // 禁用Ctrl+S (保存)
+        if (e.ctrlKey && e.keyCode === 83) {
+            e.preventDefault();
+            return false;
+        }
+    });
+    
+    // 添加水印保护
+    addWatermarkProtection();
+}
+
+// 添加水印保护
+function addWatermarkProtection() {
+    const watermark = document.createElement('div');
+    watermark.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 9999;
+        background: repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 100px,
+            rgba(0, 0, 0, 0.03) 100px,
+            rgba(0, 0, 0, 0.03) 200px
+        );
+        opacity: 0.1;
+    `;
+    
+    // 添加版权信息
+    const copyright = document.createElement('div');
+    copyright.style.cssText = `
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        color: rgba(0, 0, 0, 0.3);
+        font-size: 12px;
+        pointer-events: none;
+        z-index: 10000;
+    `;
+    copyright.textContent = '© 2025 YIFAN SHEN';
+    
+    document.body.appendChild(watermark);
+    document.body.appendChild(copyright);
 }
 
 // 控制台欢迎信息

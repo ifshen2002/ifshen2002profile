@@ -509,6 +509,20 @@ main {
     height: 100%;
     object-fit: cover;
     transition: transform 0.3s ease;
+    /* 禁用右键菜单和拖拽 */
+    user-select: none;
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+    /* 禁用图片选择 */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    /* 防止图片被保存 */
+    pointer-events: none;
 }
 
 .gallery-item:hover .gallery-image img {
