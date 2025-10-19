@@ -53,6 +53,11 @@
                     <i class="fas fa-eye"></i>
                     <span id="busuanzi_value_site_pv">0</span>
                 </div>
+                <div class="theme-toggle-nav">
+                    <button id="theme-toggle-nav" class="theme-btn">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
             </div>
             <div class="nav-toggle" id="nav-toggle">
                 <span class="bar"></span>
@@ -272,10 +277,10 @@
                     Capturing moments from my journey in technology and life
                 </p>
                 <div class="gallery-grid">
-                    <!-- 你的真实照片 -->
+                    <!-- 你的真实照片 - 初始状态为模糊 -->
                     <div class="gallery-item" data-category="personal">
                         <div class="gallery-image">
-                            <img src="photos/p1.jpg" alt="Personal Photo 1" loading="lazy">
+                            <img src="photos/p1.jpg" alt="Personal Photo 1" loading="lazy" class="blurred-image">
                             <div class="gallery-overlay">
                                 <div class="gallery-info">
                                     <h3 data-en="Personal Moment" data-zh="个人时刻">Personal Moment</h3>
@@ -284,12 +289,16 @@
                                     </p>
                                 </div>
                             </div>
+                            <div class="password-overlay">
+                                <i class="fas fa-lock"></i>
+                                <span data-en="Password Required" data-zh="需要密码">Password Required</span>
+                            </div>
                         </div>
                     </div>
                     
                     <div class="gallery-item" data-category="personal">
                         <div class="gallery-image">
-                            <img src="photos/p2.jpg" alt="Personal Photo 2" loading="lazy">
+                            <img src="photos/p2.jpg" alt="Personal Photo 2" loading="lazy" class="blurred-image">
                             <div class="gallery-overlay">
                                 <div class="gallery-info">
                                     <h3 data-en="Personal Moment" data-zh="个人时刻">Personal Moment</h3>
@@ -297,6 +306,10 @@
                                         Capturing life's beautiful moments
                                     </p>
                                 </div>
+                            </div>
+                            <div class="password-overlay">
+                                <i class="fas fa-lock"></i>
+                                <span data-en="Password Required" data-zh="需要密码">Password Required</span>
                             </div>
                         </div>
                     </div>

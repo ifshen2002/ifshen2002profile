@@ -982,29 +982,9 @@ function initMouseTrail() {
 
 // 主题切换功能
 function initThemeToggle() {
-    // 创建主题切换按钮
-    const themeToggle = document.createElement('button');
-    themeToggle.id = 'theme-toggle';
-    themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-    themeToggle.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        width: 50px;
-        height: 50px;
-        border: none;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.9);
-        color: #1f2937;
-        cursor: pointer;
-        font-size: 1.2rem;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        transition: all 0.3s ease;
-        z-index: 1000;
-        backdrop-filter: blur(10px);
-    `;
-    
-    document.body.appendChild(themeToggle);
+    // 使用导航栏内的主题切换按钮
+    const themeToggle = document.getElementById('theme-toggle-nav');
+    if (!themeToggle) return;
     
     // 获取当前主题
     const currentTheme = localStorage.getItem('theme') || 'light';
@@ -1012,7 +992,10 @@ function initThemeToggle() {
     
     // 更新按钮图标
     function updateThemeIcon(theme) {
-        themeToggle.innerHTML = theme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        const icon = themeToggle.querySelector('i');
+        if (icon) {
+            icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        }
     }
     
     updateThemeIcon(currentTheme);
@@ -1036,12 +1019,10 @@ function initThemeToggle() {
     // 悬停效果
     themeToggle.addEventListener('mouseenter', () => {
         themeToggle.style.transform = 'scale(1.1)';
-        themeToggle.style.background = 'rgba(37, 99, 235, 0.1)';
     });
     
     themeToggle.addEventListener('mouseleave', () => {
         themeToggle.style.transform = 'scale(1)';
-        themeToggle.style.background = 'rgba(255, 255, 255, 0.9)';
     });
 }
 
@@ -1075,10 +1056,19 @@ function initGallery() {
         });
     });
     
-    // 图片点击需要密码验证
+    // 图片点击需要密码验证（初始状态）
     galleryItems.forEach(item => {
         item.addEventListener('click', function() {
-            showGalleryPasswordModal();
+            // 如果已经授权，直接显示大图
+            if (this.classList.contains('authorized')) {
+                const img = this.querySelector('img');
+                const title = this.querySelector('.gallery-info h3').textContent;
+                const description = this.querySelector('.gallery-info p').textContent;
+                showImageModal(img.src, title, description);
+            } else {
+                // 未授权，显示密码输入框
+                showGalleryPasswordModal();
+            }
         });
     });
 }
@@ -1196,10 +1186,15 @@ function showGalleryPasswordModal() {
 
 // 显示画廊访问界面
 function showGalleryAccess() {
-    // 移除密码保护
+    // 移除密码保护，显示清晰图片
     const galleryItems = document.querySelectorAll('.gallery-item');
     galleryItems.forEach(item => {
+        // 添加授权状态
+        item.classList.add('authorized');
         item.style.cursor = 'pointer';
+        
+        // 重新绑定点击事件
+        item.removeEventListener('click', showGalleryPasswordModal);
         item.addEventListener('click', function() {
             const img = this.querySelector('img');
             const title = this.querySelector('.gallery-info h3').textContent;

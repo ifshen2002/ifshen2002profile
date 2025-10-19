@@ -96,6 +96,37 @@ body {
     color: #2563eb;
 }
 
+.theme-toggle-nav {
+    display: flex;
+    align-items: center;
+}
+
+.theme-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: #f3f4f6;
+    color: #6b7280;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.theme-btn:hover {
+    background: #2563eb;
+    color: white;
+    transform: scale(1.1);
+}
+
+.theme-btn.active {
+    background: #2563eb;
+    color: white;
+}
+
 .nav-logo a {
     font-size: 1.5rem;
     font-weight: 700;
@@ -525,6 +556,53 @@ main {
     pointer-events: none;
 }
 
+/* 模糊图片样式 */
+.blurred-image {
+    filter: blur(20px) brightness(0.3);
+    transform: scale(1.1);
+}
+
+/* 密码覆盖层 */
+.password-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 600;
+    z-index: 2;
+    transition: opacity 0.3s ease;
+}
+
+.password-overlay i {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: #ffd700;
+}
+
+.password-overlay span {
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+/* 已授权状态 */
+.gallery-item.authorized .blurred-image {
+    filter: none;
+    transform: scale(1);
+}
+
+.gallery-item.authorized .password-overlay {
+    opacity: 0;
+    pointer-events: none;
+}
+
 .gallery-item:hover .gallery-image img {
     transform: scale(1.1);
 }
@@ -904,6 +982,7 @@ main {
         display: none;
     }
     
+    
     .nav-menu {
         position: fixed;
         left: -100%;
@@ -1182,15 +1261,26 @@ main {
     border-color: var(--accent);
 }
 
-/* 主题切换按钮在深色模式下的样式 */
-[data-theme="dark"] #theme-toggle {
-    background: rgba(30, 41, 59, 0.9);
-    color: var(--text-primary);
+[data-theme="dark"] .theme-btn {
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
 }
 
-[data-theme="dark"] #theme-toggle:hover {
-    background: rgba(59, 130, 246, 0.2);
+[data-theme="dark"] .theme-btn:hover {
+    background: var(--accent);
+    color: white;
 }
+
+[data-theme="dark"] .password-overlay {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+[data-theme="dark"] .password-overlay i {
+    color: #ffd700;
+}
+
+/* 主题切换按钮在深色模式下的样式 */
+
 
 /* 粒子动画在深色模式下的颜色 */
 [data-theme="dark"] #particle-canvas {
