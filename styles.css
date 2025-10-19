@@ -560,6 +560,7 @@ main {
 .blurred-image {
     filter: blur(20px) brightness(0.3);
     transform: scale(1.1);
+    border: 3px solid #ff0000; /* 临时红色边框用于测试 */
 }
 
 /* 密码覆盖层 */
